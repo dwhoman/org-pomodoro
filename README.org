@@ -1,0 +1,77 @@
+* org-pomodoro
+  This is the setup I use for tracking time using the Pomodoro
+  method. It requies org version >= 8.1.2.
+
+  I set the variables org-pomodoro-clock-out-sound and
+  org-pomodoro-clock-in-sound to string file paths to ".au" files
+  (Sun/NeXT audio data). In the org file where I am tracking my break
+  time, I have the target "#<<pomodoro-break>>". In the heading that I
+  am timing, I set the property POMODORO to t. When I want to clock
+  out of the pomodoro break, I simply clock into the task that I want
+  to track.
+
+  #+BEGIN_SRC emacs-lisp
+    (setq org-pomodoro-clock-out-sound "/home/devin/media/tones/chime.au" 
+          org-pomodoro-clock-in-sound "/home/devin/media/tones/chime2.au"
+          org-pomodoro-break-file "/home/devin/datebook_PIM/datebook.org"
+          org-pomodoro-break-target "pomodoro-break")  
+  #+END_SRC
+** Clock time
+   Finding the CLOCK time is done by searching the buffer with a
+   regular expression.
+
+   `org-pomodoro-break' is within the local variable scope of
+   `org-clock-out' when ran as a hook. The variable h that holds the
+   hours gets overwritten, as does the total time in seconds. The
+   variables `te' and `ts' could be used to recompute the time spent, but
+   this would rely on those local variables not changing in the future.
+
+   According to the [[http://orgmode.org/worg/dev/org-syntax.html#Clock-_Diary_Sexp_and_Planning][spec]], the clock entries should follow this format:
+
+   clock format
+   #+BEGIN_EXAMPLE
+     CLOCK: TIMESTAMP DURATION
+   #+END_EXAMPLE
+   
+   timestamp format
+   #+BEGIN_EXAMPLE
+     [DATE TIME REPEATER]--[DATE TIME REPEATER] 
+   #+END_EXAMPLE
+
+   date format
+   #+BEGIN_EXAMPLE
+     YYYY-MM-DD DAYNAME
+   #+END_EXAMPLE
+
+   YYYY-MM-DD regex
+   #+BEGIN_EXAMPLE
+     [0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\}
+   #+END_EXAMPLE
+
+   "DAYNAME can contain any non whitespace-character besides +, -, ],
+   >, a digit or \n."
+   #+BEGIN_EXAMPLE
+     [^]-+>0-9\s\n]+
+   #+END_EXAMPLE
+
+   time format
+   #+BEGIN_EXAMPLE
+     H?H:MM
+   #+END_EXAMPLE
+
+   time regex
+   #+BEGIN_EXAMPLE
+     [0-9]\\{1,2\\}:[0-9]\\{2\\}
+   #+END_EXAMPLE
+
+   duration format
+   #+BEGIN_EXAMPLE
+     => H+:MM
+   #+END_EXAMPLE
+
+   duration regex
+   #+BEGIN_EXAMPLE
+     =>\s+\\([0-9]+\\):\\([0-9][0-9]\\)
+   #+END_EXAMPLE
+
+   repeater is not used
