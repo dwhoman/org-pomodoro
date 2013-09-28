@@ -16,6 +16,10 @@
           org-pomodoro-break-file "/home/devin/datebook_PIM/datebook.org"
           org-pomodoro-break-target "pomodoro-break")  
   #+END_SRC
+
+  If you do not specify a value for `org-pomodoro-break-file', then a
+  file in /tmp will be created. There is probably a better way to do
+  this. 
 ** Clock time
    Finding the CLOCK time is done by searching the buffer with a
    regular expression.
