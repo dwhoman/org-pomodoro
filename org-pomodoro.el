@@ -81,13 +81,18 @@
   :type '(string))
 
 (defun org-pomodoro-start ()
-  "When the current item has the :POMODORO: property set, start a new pomodoro timer."
-  (when (assoc "POMODORO" (org-entry-properties))
+  "When the current item has the :POMODORO: property set to a
+non-nil value, start a new pomodoro timer."
+  (when (and (assoc "POMODORO" (org-entry-properties))
+	     (not (string= "nil" (cdr (assoc "POMODORO" (org-entry-properties))))))
     (let ((org-clock-sound org-pomodoro-clock-out-sound))
       (org-timer-cancel-timer)
       (org-timer-set-timer org-pomodoro-work-time))))
 
 (defun org-pomodoro-break ()
+  "When the current item has the :POMODORO: property set to a
+non-nil value, stop the pomodoro timer, and ask the user if they
+want to start a break timer."
   (org-pomodoro-cancel)
   ;; check if current item is marked for pomodoro
   (when (and (assoc "POMODORO" (org-entry-properties)) 
