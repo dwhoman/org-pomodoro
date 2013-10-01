@@ -1,6 +1,6 @@
 * org-pomodoro
   This is the setup I use for tracking time using the Pomodoro
-  method. It requies org version >= 8.1.2.
+  method. It requires org version >= 8.1.2.
 
   I set the variables org-pomodoro-clock-out-sound and
   org-pomodoro-clock-in-sound to string file paths to ".au" files
@@ -52,7 +52,7 @@
      [0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\}
    #+END_EXAMPLE
 
-   "DAYNAME can contain any non whitespace-character besides +, -, ],
+   "DAYNAME can contain any non-whitespace character besides +, -, ],
    >, a digit or \n."
    #+BEGIN_EXAMPLE
      [^]-+>0-9\s\n]+
