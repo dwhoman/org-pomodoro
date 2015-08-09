@@ -86,7 +86,8 @@ non-nil value, start a new pomodoro timer."
   (when (and (assoc "POMODORO" (org-entry-properties))
 	     (not (string= "nil" (cdr (assoc "POMODORO" (org-entry-properties))))))
     (let ((org-clock-sound org-pomodoro-clock-out-sound))
-      (org-timer-cancel-timer)
+      (when org-timer-start-time
+	(org-timer-stop))
       (org-timer-set-timer org-pomodoro-work-time))))
 
 (defun org-pomodoro-break ()
@@ -155,7 +156,8 @@ want to start a break timer."
 
 (defun org-pomodoro-cancel ()
   "Cancel the current pomodoro."
-  (org-timer-cancel-timer))
+  (when org-timer-start-time
+    (org-timer-stop)))
 
 (add-hook 'org-clock-in-hook 'org-pomodoro-start)
 (add-hook 'org-clock-out-hook 'org-pomodoro-break)
